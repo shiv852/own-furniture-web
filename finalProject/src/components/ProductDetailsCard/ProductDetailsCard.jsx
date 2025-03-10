@@ -36,7 +36,6 @@ const ProductDetailsCard = ({setOpen , data}) => {
               className="absolute right-3 top-3 z-50"
               onClick={() => setOpen(false)}
             />
-
             <div className=" w-full md:flex ">
                <div className='w-full 800px:w-[50%] '>
                     <img src={data.image_Url[0].url} alt="" className='rounded-lg mt-8' />
