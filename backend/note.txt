@@ -1,0 +1,15 @@
+login(usersignin.js) - jab user login krega toh uska data sirf token m store rhega vo db m parmanent store nhi hoyega
+
+home screen login icon - isme saara data aayega vo token se uthayenge bcz agr user logout krta h toh vo login data token se hatega toh icon-on-login se bhi automatic hat jyega 
+file-name controller/userdatails.js
+
+
+middleware/authToken.js = browser se backend m token ka data aa gya uski id or email , jo maine usersignin.js se pass kri thi vo wala data aa gya .
+ye wala aa gya
+
+      const tokenData ={
+        _id : user._id,
+        email : user.email,
+      }
+
+controller/userdetails.js = sari information aa gyi h ab isko ham network m jake dekho , ab frontend pr bheje ge jisse home page pr show hogi icon m
