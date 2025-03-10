@@ -23,6 +23,15 @@ const ProductDetailsCard = ({setOpen , data}) => {
      setCount(count + 1);
   }
 
+  // Function to get the correct image URL
+  const getImageUrl = (path) => {
+    // If the path is a full URL (starts with http or https), return it as is
+    if (path && (path.startsWith('http://') || path.startsWith('https://'))) {
+      return path;
+    }
+    // Otherwise, prepend the public path
+    return path ? `/${path}` : '';
+  };
 
   return (
     <div className='bg-[#fff]'>
@@ -39,9 +48,17 @@ const ProductDetailsCard = ({setOpen , data}) => {
 
             <div className=" w-full md:flex ">
                <div className='w-full 800px:w-[50%] '>
-                    <img src={data.image_Url[0].url} alt="" className='rounded-lg mt-8' />
+                    <img 
+                      src={getImageUrl(data.image_Url[0].url)} 
+                      alt="Product image" 
+                      className='rounded-lg mt-8' 
+                    />
                     <div className="flex ">
-                      <img src={data.shop.shop_avatar.url} alt="" className=' w-[50px] h-[50px] rounded-full mr-2'/>
+                      <img 
+                        src={getImageUrl(data.shop.shop_avatar.url)} 
+                        alt="Shop avatar" 
+                        className=' w-[50px] h-[50px] rounded-full mr-2'
+                      />
                       <div>
                             <h3 className={`${styles.shop_name}`}>
                                 {data.shop.name}

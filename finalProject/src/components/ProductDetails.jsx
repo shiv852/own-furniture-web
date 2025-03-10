@@ -25,6 +25,16 @@ const ProductDetails = ({data}) => {
     navigate("/inbox?conversation=563gsfdgweprutoibntwpruhla")
   }
 
+  // Function to get the correct image URL
+  const getImageUrl = (path) => {
+    // If the path is a full URL (starts with http or https), return it as is
+    if (path && (path.startsWith('http://') || path.startsWith('https://'))) {
+      return path;
+    }
+    // Otherwise, prepend the public path
+    return path ? `/${path}` : '';
+  };
+
   console.log("current data is here :" ,  data)
 
   return (
@@ -40,17 +50,30 @@ const ProductDetails = ({data}) => {
           <div className="w-full py-5">
             <div className="block w-full 800px:flex">  
               <div className="w-full 800px:w-[50%]">
-              <img src={data.image_Url[select].url} alt="why not show" className="w-[80% ]"/>
+              <img 
+                src={getImageUrl(data.image_Url[select].url)} 
+                alt="Product image" 
+                className="w-[80% ]"
+              />
               </div>
               <div className="w-full md:flex  800px:w-[50%]">
               {/* bg-red-600  */}
                 <div className="w-full  flex">
                   <div className={`${select === 0 ? "border" : "null"} cursor-pointer`}>  
                   
-                    <img src={data.image_Url[0].url} alt="new one" onClick={()=>setSelect(0)} />
+                    <img 
+                      src={getImageUrl(data.image_Url[0].url)} 
+                      alt="Product thumbnail" 
+                      onClick={()=>setSelect(0)} 
+                    />
 
                   </div>
-                  <img src={data?.image_Url[1].url} alt="what the heal" onClick={()=>setSelect(1)} className="h-[200px] w-[100px] rounded-lg mt-8"/>
+                  <img 
+                    src={getImageUrl(data?.image_Url[1].url)} 
+                    alt="Product thumbnail" 
+                    onClick={()=>setSelect(1)} 
+                    className="h-[200px] w-[100px] rounded-lg mt-8"
+                  />
               </div>
               {/* g-green-400 */}
                       <div className="w-full    800px:w-[50%]">
@@ -107,7 +130,11 @@ const ProductDetails = ({data}) => {
                   </div>
 
                   <div className="flex items-center pt-8">
-                    <img src={data.shop.shop_avatar.url} alt="" className="w-[50px]    h-[50px] mr-2 rounded-full"/>
+                    <img 
+                      src={getImageUrl(data.shop.shop_avatar.url)} 
+                      alt="Shop avatar" 
+                      className="w-[50px] h-[50px] mr-2 rounded-full"
+                    />
  
                     <div className="pr-8">
                       <h3 className={`${styles.shop_name} pb-1 pt-1`}>

@@ -11,14 +11,24 @@ const Productcard = ({ data }) => {
   const d = data.name;
   const product_name = d.replace(/\s+/g, "-");
 
+  // Function to get the correct image URL
+  const getImageUrl = (path) => {
+    // If the path is a full URL (starts with http or https), return it as is
+    if (path && (path.startsWith('http://') || path.startsWith('https://'))) {
+      return path;
+    }
+    // Otherwise, prepend the public path
+    return path ? `/${path}` : '';
+  };
+
   return (
     <>
       <div className="w-full h-[370px] bg-white rounded-lg shadow-sm p-3 relative cursor-pointer">
         <div className="flex justify-end"></div>
         <Link to={`/product/${product_name}`}>
           <img
-            src={data.image_Url[0].url}
-            alt="dosn't show"
+            src={getImageUrl(data.image_Url[0].url)}
+            alt="Product image"
             className="w-full overflow-hidden h-[170px] object-contain"
           />
         </Link>
