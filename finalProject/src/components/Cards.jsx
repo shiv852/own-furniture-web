@@ -10,7 +10,7 @@ const Cards = () => {
  
     //   const items=
     //       {
-  
+                  
     //           "images":"images/img10.jpg",
     //          "heading":"furniture1",
     //          "para":"Lorem ccusamus  ducimus doloribus, placeat non. Modi, sunt. Assumenda, in labore!"
