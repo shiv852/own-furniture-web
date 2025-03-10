@@ -7,7 +7,20 @@ import { RxCross1 } from 'react-icons/rx';
 const CartSingle = ({data}) => {
 
   const [value , setValue] = useState(1);
-      const totalPrice = data.price*value;
+  const totalPrice = data.price*value;
+
+  // Helper function to handle image URLs
+  const getImageUrl = (path) => {
+    if (!path) return '';
+    
+    // If it's already a full URL, return as is
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return path;
+    }
+    
+    // Otherwise, prepend a slash for relative paths
+    return `/${path}`;
+  };
 
   return (
     <div className="border-b p-4">
@@ -24,8 +37,11 @@ const CartSingle = ({data}) => {
            <HiOutlineMinus size={16} color='#7d879c'/>
         </div>
       </div>
-      <img src="images/57.png" alt="doesn't show" 
-      className='w-[80px] h-[80px] ml-2 rounded-sm'/>
+      <img 
+        src={getImageUrl("images/57.png")} 
+        alt="Product image" 
+        className='w-[80px] h-[80px] ml-2 rounded-sm'
+      />
       <div className='pl-[5px]'>
         <h5>{data.name}</h5>
         <h4 className='font-[400] text-[15px] text-[#00000082]'> ${data.price} * {value} </h4>

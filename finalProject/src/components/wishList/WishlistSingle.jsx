@@ -5,15 +5,31 @@ import { BsCartPlus } from "react-icons/bs";
 
 const WishlistSingle = ({data}) => {
   const [value , setValue] = useState(1);
-      const totalPrice = data.price*value;
+  const totalPrice = data.price*value;
+
+  // Helper function to handle image URLs
+  const getImageUrl = (path) => {
+    if (!path) return '';
+    
+    // If it's already a full URL, return as is
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return path;
+    }
+    
+    // Otherwise, prepend a slash for relative paths
+    return `/${path}`;
+  };
 
   return (
     <div className="border-b p-4">
     <div className="w-full flex items-center ">
       <RxCross1 className='cursor-pointer mx-auto'/>
       <div className=" flex item-center ">
-      <img src="images/img5.jpg" alt="doesn't show" 
-      className='w-[80px] h-[80px] ml-2 rounded-sm'/>
+      <img 
+        src={getImageUrl("images/img5.jpg")} 
+        alt="Product image" 
+        className='w-[80px] h-[80px] ml-2 rounded-sm'
+      />
       </div>
       <div className=' pl-2 '>
         <h5>{data.name}</h5>

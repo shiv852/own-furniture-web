@@ -1,4 +1,3 @@
-
 import gsap from "gsap"
 import "./Boxcard.css"
 import {useGSAP} from '@gsap/react'
@@ -7,10 +6,22 @@ import { Link } from "react-router-dom"
 import { IoIosArrowRoundForward } from "react-icons/io";
 function Boxcard(){
     
-
    const imgRef= useRef()
    const img2Ref = useRef()
    const img3Ref = useRef()
+
+   // Helper function to handle image URLs
+   const getImageUrl = (path) => {
+     if (!path) return '';
+     
+     // If it's already a full URL, return as is
+     if (path.startsWith('http://') || path.startsWith('https://')) {
+       return path;
+     }
+     
+     // Otherwise, prepend a slash for relative paths
+     return `/${path}`;
+   };
 
     useGSAP(()=>{
         gsap.from( imgRef.current,{
@@ -62,9 +73,26 @@ return<>
         </Link>
         </div>
         <Link to="/products">
-         <img ref={imgRef} className="rounded-sm h-[320px] w-[235px] left-[19%] top-[-25%] absolute" src="images/52.png" alt="" id="img1" />
-        <img ref={img2Ref} className="z-0 rounded-sm h-[180px] w-[208px] right-[29%] top-[-21%] absolute" src="images/56.png" alt="" id="img3" /> 
-        <img ref={img3Ref} className="rounded-sm h-[200px] w-[220px] right-[-72%] top-[42px] relative " src="images/img11.jpg" alt="" />
+         <img 
+           ref={imgRef} 
+           className="rounded-sm h-[320px] w-[235px] left-[19%] top-[-25%] absolute" 
+           src={getImageUrl("images/52.png")} 
+           alt="Furniture image 1" 
+           id="img1" 
+         />
+         <img 
+           ref={img2Ref} 
+           className="z-0 rounded-sm h-[180px] w-[208px] right-[29%] top-[-21%] absolute" 
+           src={getImageUrl("images/56.png")} 
+           alt="Furniture image 2" 
+           id="img3" 
+         /> 
+         <img 
+           ref={img3Ref} 
+           className="rounded-sm h-[200px] w-[220px] right-[-72%] top-[42px] relative" 
+           src={getImageUrl("images/img11.jpg")} 
+           alt="Furniture image 3" 
+         />
         </Link> 
         
     </div>

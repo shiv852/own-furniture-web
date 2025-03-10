@@ -4,6 +4,20 @@ import { Link } from 'react-router-dom';
 
 const ProductDetailsInfo = ({data}) => {
   const [active , setActive]=useState(1);
+
+  // Helper function to handle image URLs
+  const getImageUrl = (path) => {
+    if (!path) return '';
+    
+    // If it's already a full URL, return as is
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return path;
+    }
+    
+    // Otherwise, prepend a slash for relative paths
+    return `/${path}`;
+  };
+
   return (
     <div>
       <div className='bg-[#f5f6fb]  px-3 800px:px-10 py-2 rounded '>
@@ -67,8 +81,11 @@ const ProductDetailsInfo = ({data}) => {
                 <div className='w-full md:flex  800px:flex p-5'>
                   <div className="w-full  800px:w-[50%]">
                     <div className="flex items-center">
-                      <img src={data.shop.shop_avatar.url} alt="" 
-                      className='w-[50px] h-[50px] rounded-full'/>
+                      <img 
+                        src={getImageUrl(data.shop.shop_avatar.url)} 
+                        alt="Shop avatar" 
+                        className='w-[50px] h-[50px] rounded-full'
+                      />
                           <div className='pl-3 '>
                             <h3 className={`${styles.shop_name}`}>
                                 {data.shop.name}

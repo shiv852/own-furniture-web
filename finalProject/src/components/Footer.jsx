@@ -4,6 +4,19 @@ import gsap from "gsap";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
+  // Helper function to handle image URLs
+  const getImageUrl = (path) => {
+    if (!path) return '';
+    
+    // If it's already a full URL, return as is
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return path;
+    }
+    
+    // Otherwise, prepend a slash for relative paths
+    return `/${path}`;
+  };
+
   useGSAP(() => {
     gsap.from("#inputbtn ", {
       delay: 0.5,
@@ -46,8 +59,8 @@ const Footer = () => {
            
         <img
           className="rounded-[1rem] z-0 relative  px-1 py-1 w-[100%] h-[100%]"
-          src="images/52.png"
-          alt="dont show"
+          src={getImageUrl("images/52.png")}
+          alt="Furniture image"
         />
       </div>
       </div>
