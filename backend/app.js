@@ -13,6 +13,11 @@ require("dotenv").config()
     origin: process.env.FRONTEND_URL,
     credentials:true
   }))
+
+  app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
+
   // hamara data jo user k pass se arha h vo json format m bdl jyega yha aate hi
   app.use(express.json())
   app.use(cookieParser())
