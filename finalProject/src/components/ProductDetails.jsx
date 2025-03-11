@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/styles";
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage, AiOutlineShoppingCart } from "react-icons/ai";
 import ProductDetailsInfo from "./ProductDetailsInfo";
+import { Context } from "../store/Item_store";
+import { toast } from "react-toastify";
 
 const ProductDetails = ({data}) => {
  
@@ -10,7 +12,14 @@ const ProductDetails = ({data}) => {
   const [click, setClick] = useState(false);
   const [select, setSelect] = useState(0);
   const navigate = useNavigate();
+  const { addToCart, addToWishlist, removeFromWishlist, isInWishlist } = useContext(Context);
 
+  // Check if product is in wishlist on component mount
+  useEffect(() => {
+    if (data && data.id) {
+      setClick(isInWishlist(data.id));
+    }
+  }, [data, isInWishlist]);
 
   const incrementCount=()=>{
       setCount(count + 1)
@@ -33,6 +42,47 @@ const ProductDetails = ({data}) => {
     }
     // Otherwise, prepend the public path
     return path ? `/${path}` : '';
+  };
+
+  // Handle add to cart
+  const handleAddToCart = () => {
+    if (data) {
+      // Generate a unique ID if the product doesn't have one
+      const productId = data.id || `product_${Date.now()}`;
+      
+      const cartItem = {
+        ...data,
+        id: productId,
+        qty: count
+      };
+      
+      addToCart(cartItem);
+      // Show success message
+      toast.success("Item added to cart successfully!");
+    }
+  };
+
+  // Handle wishlist toggle
+  const handleWishlistToggle = () => {
+    if (data) {
+      // Generate a unique ID if the product doesn't have one
+      const productId = data.id || `product_${Date.now()}`;
+      
+      const wishlistItem = {
+        ...data,
+        id: productId
+      };
+      
+      if (click) {
+        removeFromWishlist(productId);
+        toast.success("Item removed from wishlist!");
+      } else {
+        addToWishlist(wishlistItem);
+        toast.success("Item added to wishlist!");
+      }
+      
+      setClick(!click);
+    }
   };
 
   console.log("current data is here :" ,  data)
@@ -107,25 +157,25 @@ const ProductDetails = ({data}) => {
                             <AiFillHeart
                             size={30}
                             className="cursor-pointer"
-                            onClick={()=>setClick(!click)}
-                            color={click ? "red" :"#333"}
-                            title="remove from wishlist"
+                            onClick={handleWishlistToggle}
+                            color="red"
+                            title="Remove from wishlist"
                             />
                            ):(
                             <AiOutlineHeart
                             size={30}
-                            className="cursor-pointer "
-                            onClick={()=>setClick(!click)}
-                            color={click ? "red" : "#333"}
+                            className="cursor-pointer"
+                            onClick={handleWishlistToggle}
+                            color="#333"
                             title="Add to wishlist"   
                             />
                            )}
                         </div>
                        
                         </div>
-                  <div className={` ${styles.button} mt-6 rounded h-11 flex items-center`}>
+                  <div className={` ${styles.button} mt-6 rounded h-11 flex items-center cursor-pointer`} onClick={handleAddToCart}>
                         <span className="text-white flex items-center">
-                          Add to Cart <AiOutlineShoppingCart/>
+                          Add to Cart <AiOutlineShoppingCart className="ml-1"/>
                         </span>
                   </div>
 
