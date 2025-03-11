@@ -42,125 +42,139 @@ const ProductDetails = ({data}) => {
 
   return (
     <>
-    
     <br />
-      <br />
-      <br />
-      <br />
+    <br />
+    <br />
+    <br />
     <div className="bg-white">
       {data ? (
-        <div className={`${styles.section} w-[90%]  800px:w-[80%] `}>   
-          <div className="w-full py-5">
-            <div className="block w-full 800px:flex">  
-              <div className="w-full 800px:w-[50%]">
-              <img 
-                src={getImageUrl(data.image_Url[select].url)} 
-                alt="Product image" 
-                className="w-[80% ]"
-              />
-              </div>
-              <div className="w-full md:flex  800px:w-[50%]">
-              {/* bg-red-600  */}
-                <div className="w-full  flex">
-                  <div className={`${select === 0 ? "border" : "null"} cursor-pointer`}>  
-                  
+        <div className={`${styles.section} w-[95%] mx-auto`}>   
+          <div className="w-full py-5 ">
+            <div className="flex flex-col  md:flex-row ">  
+              <div className="w-full 800px:pr-4 mb-8 800px:mb-0 block justify-between ">
+                <div className="relative h-[400px] w-full">
+                  <div className="absolute top-0 left-1/2 transform  -translate-x-1/2 z-10">
+                    <img 
+                      src={getImageUrl(data.image_Url[select].url)} 
+                      alt="Main product" 
+                      className="w-[250px] h-[250px] object-contain rounded-lg shadow-md border border-gray-200 bg-white p-2 hover:shadow-lg transition-all duration-300  "
+                    />
+                  </div>
+                  <div 
+                    className={`absolute bottom-0 left-[15%] transition-all duration-300 ${select === 0 ? 'scale-110 border-2 border-teal-500' : 'opacity-80 hover:opacity-100'}`}
+                    onClick={() => setSelect(0)}
+                  >
                     <img 
                       src={getImageUrl(data.image_Url[0].url)} 
-                      alt="Product thumbnail" 
-                      onClick={()=>setSelect(0)} 
+                      alt="Product view 1" 
+                      className="w-[130px] h-[130px] object-contain rounded-lg shadow-sm cursor-pointer bg-white p-2"
                     />
-
                   </div>
-                  <img 
-                    src={getImageUrl(data?.image_Url[1].url)} 
-                    alt="Product thumbnail" 
-                    onClick={()=>setSelect(1)} 
-                    className="h-[200px] w-[100px] rounded-lg mt-8"
-                  />
+                  
+                  {/* Thumbnail 2 - bottom right of triangle */}
+                  <div 
+                    className={`absolute bottom-0 right-[15%] transition-all duration-300 ${select === 1 ? 'scale-110 border-2 border-teal-500' : 'opacity-80 hover:opacity-100'}`}
+                    onClick={() => setSelect(1)}
+                  >
+                    <img 
+                      src={getImageUrl(data?.image_Url[1].url)} 
+                      alt="Product view 2" 
+                      className="w-[130px] h-[130px] object-contain rounded-lg shadow-sm cursor-pointer bg-white p-2"
+                    />
+                  </div>
+                </div>
               </div>
-              {/* g-green-400 */}
-                      <div className="w-full    800px:w-[50%]">
-                        <h1 className={`${styles.productTitle}`}>{data.name}</h1>
-                        <p>{data.description}</p>
-                        <div className="flex pt">
-                          <h4 className={`${styles.productDiscountPrice}`}>${data.discount_price}</h4>
-                          <h3 className={`${styles.price}`}>
-                              {data.price ? data.price + "$" : null}
-                          </h3>
-                        </div>
-                       
 
 
-                        <div className="flex items-center mt-12 justify-between ">
-                         <div className='' >
-                              <button className='  bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-l px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out' onClick={decrementCount}>
-                                -
-                              </button>
-                             <span className="bg-gray-200 text-gray-800 font-medium px-4 py-[11px]">
-                               {count}
-                             </span>
-                              <button className='bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-l px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out' onClick={incrementCount}>
-                               +
-                               </button>
-                          </div>
 
+              {/* Right side - Product Details Section */}
+              <div className="w-full  800px:pl-8 800px:border-l            ">
+                <div className="w-full">
+                  <h1 className={`${styles.productTitle} text-[24px] font-semibold`}>{data.name}</h1>
+                  <p className="mt-3 text-gray-600 text-[15px] leading-6">{data.description}</p>
+                  
+                  <div className="flex pt-4 items-center">
+                    <h4 className={`${styles.productDiscountPrice} text-[22px] font-bold text-teal-600`}>${data.discount_price}</h4>
+                    <h3 className={`${styles.price} ml-3 line-through text-gray-400`}>
+                      {data.price ? data.price + "$" : null}
+                    </h3>
+                  </div>
+                        
+                  <div className="flex items-center mt-6 justify-between ">
+                    <div className="flex items-center">
+                      <button 
+                        className="bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-l px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out" 
+                        onClick={decrementCount}
+                      >
+                        -
+                      </button>
+                      <span className="bg-gray-200 text-gray-800 font-medium px-4 py-[11px]">
+                        {count}
+                      </span>
+                      <button 
+                        className="bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-r px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out" 
+                        onClick={incrementCount}
+                      >
+                        +
+                      </button>
+                    </div>
 
-                        <div>
-                          {click ?(
-                            <AiFillHeart
-                            size={30}
-                            className="cursor-pointer"
-                            onClick={()=>setClick(!click)}
-                            color={click ? "red" :"#333"}
-                            title="remove from wishlist"
-                            />
-                           ):(
-                            <AiOutlineHeart
-                            size={30}
-                            className="cursor-pointer "
-                            onClick={()=>setClick(!click)}
-                            color={click ? "red" : "#333"}
-                            title="Add to wishlist"   
-                            />
-                           )}
-                        </div>
-                       
-                        </div>
-                  <div className={` ${styles.button} mt-6 rounded h-11 flex items-center`}>
-                        <span className="text-white flex items-center">
-                          Add to Cart <AiOutlineShoppingCart/>
-                        </span>
+                    <div>
+                      {click ? (
+                        <AiFillHeart
+                          size={30}
+                          className="cursor-pointer"
+                          onClick={() => setClick(!click)}
+                          color={click ? "red" : "#333"}
+                          title="Remove from wishlist"
+                        />
+                      ) : (
+                        <AiOutlineHeart
+                          size={30}
+                          className="cursor-pointer"
+                          onClick={() => setClick(!click)}
+                          color={click ? "red" : "#333"}
+                          title="Add to wishlist"   
+                        />
+                      )}
+                    </div>
                   </div>
 
-                  <div className="flex items-center pt-8">
+                  <div className="mt-6 w-full">
+                    <button className={`${styles.button} w-full rounded-md h-12 flex items-center justify-center bg-teal-600 hover:bg-teal-700 transition-all`}>
+                      <span className="text-white flex items-center text-[16px]">
+                        Add to Cart <AiOutlineShoppingCart className="ml-2" size={20}/>
+                      </span>
+                    </button>
+                  </div>
+
+                  <div className="flex items-center mt-8 border-t pt-4">
                     <img 
                       src={getImageUrl(data.shop.shop_avatar.url)} 
                       alt="Shop avatar" 
-                      className="w-[50px] h-[50px] mr-2 rounded-full"
+                      className="w-[50px] h-[50px] mr-3 rounded-full border border-gray-200"
                     />
- 
-                    <div className="pr-8">
-                      <h3 className={`${styles.shop_name} pb-1 pt-1`}>
+  
+                    <div className="pr-4">
+                      <h3 className={`${styles.shop_name} pb-1 pt-1 font-medium`}>
                         {data.shop.name}
                       </h3>
-                        <h5 className="pb-3 text-[15px] text-black ">
-                          ({data.shop.ratings}) Ratings
-                        </h5>
+                      <h5 className="text-[14px] text-gray-600">
+                        ({data.shop.ratings}) Ratings
+                      </h5>
                     </div>
-                      <div className={`${styles.button} bg-[#6443d1] mt-4 rounded h-11`}
+                    
+                    <button 
+                      className={`${styles.button} bg-[#6443d1] hover:bg-[#5636b8] rounded-md h-11 ml-auto px-4 transition-all`}
                       onClick={handleMessageSubmit}
-                      >
-                           <span className="text-white flex items-center">
-                            Send Message <AiOutlineMessage className="ml-1"/>
-                           </span>
-                      </div>       
+                    >
+                      <span className="text-white flex items-center whitespace-nowrap">
+                        Send Message <AiOutlineMessage className="ml-1"/>
+                      </span>
+                    </button>       
                   </div>
-
-
-                 </div>
                 </div>
-
-
+              </div>
             </div>
           </div>
           <br />
@@ -168,10 +182,9 @@ const ProductDetails = ({data}) => {
           <ProductDetailsInfo data={data}/>
           <br />
         </div>
-        ) : null}
-
+      ) : null}
     </div>
-      </>
+    </>
   );
 };
 

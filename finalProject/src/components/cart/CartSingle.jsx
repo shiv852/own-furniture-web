@@ -1,3 +1,4 @@
+// ye mera bag hai side mein se bug mein item honge vo idher dekhenge
 import React, { useState } from 'react'
 import { HiOutlineMinus, HiPlus} from "react-icons/hi";
 import styles from '../../styles/styles';
@@ -23,7 +24,7 @@ const CartSingle = ({data}) => {
   };
 
   return (
-    <div className="border-b p-4">
+    <div className="border-b p-4 bg-black w-full h-full">
     <div className="w-full flex items-center">
       <div>
         <div className={`${styles.noramlFlex} bg-[#e44343] border-[#e4434373] rounded-full w-[25px] h-[25px] justify-center cursor-pointer`}
