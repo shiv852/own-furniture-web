@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/styles";
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage, AiOutlineShoppingCart } from "react-icons/ai";
 import ProductDetailsInfo from "./ProductDetailsInfo";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../store/cartSlice";
+import { addToWishlist, removeFromWishlist } from "../store/wishlistSlice";
 import { toast } from "react-toastify";
 
 const ProductDetails = ({data}) => {
@@ -14,6 +15,19 @@ const ProductDetails = ({data}) => {
   const [select, setSelect] = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
+  // Get wishlist from Redux store
+  const { wishlist } = useSelector((state) => state.wishlist);
+  
+  // Check if product is already in wishlist
+  useEffect(() => {
+    if (wishlist && wishlist.length > 0) {
+      const isItemInWishlist = wishlist.some(item => item.id === (data._id || data.id));
+      if (isItemInWishlist) {
+        setClick(true);
+      }
+    }
+  }, [wishlist, data]);
 
   const incrementCount=()=>{
       setCount(count + 1)
@@ -56,6 +70,33 @@ const ProductDetails = ({data}) => {
     
     dispatch(addToCart(cartItem));
     toast.success("Item added to cart successfully!");
+  };
+  
+  // Handle Wishlist
+  const handleWishlist = () => {
+    if (click) {
+      // Remove from wishlist
+      dispatch(removeFromWishlist({
+        id: data._id || data.id
+      }));
+      setClick(false);
+      toast.success("Item removed from wishlist!");
+    } else {
+      // Add to wishlist
+      const wishlistItem = {
+        id: data._id || data.id,
+        name: data.name,
+        price: data.price,
+        discount_price: data.discount_price,
+        description: data.description,
+        image_Url: data.image_Url[select].url,
+        shop: data.shop
+      };
+      
+      dispatch(addToWishlist(wishlistItem));
+      setClick(true);
+      toast.success("Item added to wishlist!");
+    }
   };
 
   console.log("current data is here :" ,  data)
@@ -147,16 +188,16 @@ const ProductDetails = ({data}) => {
                         <AiFillHeart
                           size={30}
                           className="cursor-pointer"
-                          onClick={() => setClick(!click)}
-                          color={click ? "red" : "#333"}
+                          onClick={handleWishlist}
+                          color="red"
                           title="Remove from wishlist"
                         />
                       ) : (
                         <AiOutlineHeart
                           size={30}
                           className="cursor-pointer"
-                          onClick={() => setClick(!click)}
-                          color={click ? "red" : "#333"}
+                          onClick={handleWishlist}
+                          color="#333"
                           title="Add to wishlist"   
                         />
                       )}

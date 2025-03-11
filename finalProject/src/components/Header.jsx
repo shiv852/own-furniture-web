@@ -14,12 +14,13 @@ import WishList from "./wishList/WishList";
 import { AiOutlineHeart } from "react-icons/ai";
 
 const Header = () => {
-  const [openCart , setopenCart] = useState(false)
-  const [openWishlist , setOpenWishlist] = useState(false)
+  const [openCart, setopenCart] = useState(false)
+  const [openWishlist, setOpenWishlist] = useState(false)
   const [menuDisplay, setmenuDisplay] = useState(false);
   
-  // Get cart data from Redux store
+  // Get cart and wishlist data from Redux store
   const { totalQuantity } = useSelector((state) => state.cart);
+  const { totalItems: wishlistCount } = useSelector((state) => state.wishlist);
   
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user?.user);
@@ -59,13 +60,21 @@ const Header = () => {
             </Link>
 
             <div className="order-3 search ml-[48px] z-10 relative items-center flex flex-row">
-              <AiOutlineHeart 
-                size={24} 
-                className="text-white px-2 w-11 h-11 cursor-pointer"
-                onClick={() => setOpenWishlist(true)}
-              />
+              <div className="relative">
+                <AiOutlineHeart 
+                  size={24} 
+                  className="text-white px-2 w-11 h-11 cursor-pointer"
+                  onClick={() => setOpenWishlist(true)}
+                />
+                {wishlistCount > 0 && (
+                  <span className="absolute top-0 right-0 bg-red-500 rounded-full w-5 h-5 flex items-center justify-center text-white text-xs">
+                    {wishlistCount}
+                  </span>
+                )}
+              </div>
+              
               <div 
-                className={`${img.bag} cursor-pointer order-4 my-auto flex`} 
+                className={`${img.bag} cursor-pointer order-4 my-auto flex relative`} 
                 onClick={() => setopenCart(true)}
               >
                 <ion-icon name="cart-outline"></ion-icon>

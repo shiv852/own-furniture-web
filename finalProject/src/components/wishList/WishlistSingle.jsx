@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { RxCross1 } from 'react-icons/rx';
 import { BsCartPlus } from "react-icons/bs";
-
+import { useDispatch } from 'react-redux';
+import { removeFromWishlist } from '../../store/wishlistSlice';
+import { addToCart } from '../../store/cartSlice';
+import { toast } from 'react-toastify';
 
 const WishlistSingle = ({data}) => {
-  const [value , setValue] = useState(1);
-  const totalPrice = data.price*value;
-
+  const dispatch = useDispatch();
+  
   // Helper function to handle image URLs
   const getImageUrl = (path) => {
     if (!path) return '';
@@ -19,31 +21,63 @@ const WishlistSingle = ({data}) => {
     // Otherwise, prepend a slash for relative paths
     return `/${path}`;
   };
+  
+  const handleRemoveFromWishlist = () => {
+    dispatch(removeFromWishlist({
+      id: data.id
+    }));
+    toast.success("Item removed from wishlist!");
+  };
+  
+  const handleAddToCart = () => {
+    const cartItem = {
+      id: data.id,
+      name: data.name,
+      price: data.price,
+      discount_price: data.discount_price,
+      description: data.description,
+      quantity: 1,
+      image_Url: data.image_Url,
+      shop: data.shop
+    };
+    
+    dispatch(addToCart(cartItem));
+    toast.success("Item added to cart successfully!");
+  };
 
   return (
     <div className="border-b p-4">
-    <div className="w-full flex items-center ">
-      <RxCross1 className='cursor-pointer mx-auto'/>
-      <div className=" flex item-center ">
-      <img 
-        src={getImageUrl("images/img5.jpg")} 
-        alt="Product image" 
-        className='w-[80px] h-[80px] ml-2 rounded-sm'
-      />
-      </div>
-      <div className=' pl-2 '>
-        <h5>{data.name}</h5>
-        <h4 className='font-[400] text-[15px] text-[#00000082]'> ${data.price} * {value} </h4>
-        <h4 className='font-[600] text-[17px] pt-[3px] text-[#d02222] font-Robota'>
-          US ${totalPrice}
-        </h4>
-      </div>
-      <div className='mx-auto'>
-          <BsCartPlus size={20} className=' cursor-pointer' title='Add to cart'/>
-      </div>
-    </div> 
-  </div>
-  
+      <div className="w-full flex items-center">
+        <RxCross1 
+          className='cursor-pointer'
+          onClick={handleRemoveFromWishlist}
+        />
+        <div className="flex items-center ml-2">
+          <img 
+            src={getImageUrl(data.image_Url)} 
+            alt={data.name} 
+            className='w-[80px] h-[80px] rounded-sm object-contain'
+          />
+        </div>
+        <div className='pl-[15px]'>
+          <h5 className="font-medium">{data.name}</h5>
+          <h4 className='font-[400] text-[15px] text-[#00000082]'>${data.discount_price}</h4>
+          {data.price && data.price > data.discount_price && (
+            <h4 className='font-[400] text-[13px] text-[#00000082] line-through'>
+              ${data.price}
+            </h4>
+          )}
+        </div>
+        <div className='ml-auto'>
+          <BsCartPlus 
+            size={20} 
+            className='cursor-pointer' 
+            title='Add to cart'
+            onClick={handleAddToCart}
+          />
+        </div>
+      </div> 
+    </div>
   )
 }
 
