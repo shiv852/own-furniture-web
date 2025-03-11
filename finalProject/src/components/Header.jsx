@@ -17,7 +17,10 @@ const Header = () => {
   const [openCart , setopenCart] = useState(false)
   const [openWishlist , setOpenWishlist] = useState(false)
   const [menuDisplay, setmenuDisplay] = useState(false);
-  // const bag = useSelector((store) => store.bag);
+  
+  // Get cart data from Redux store
+  const { totalQuantity } = useSelector((state) => state.cart);
+  
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user?.user);
   console.log("user is ", user); // backend userdetails.js se user ki details sari header m display ho gyi login section ki
@@ -38,17 +41,15 @@ const Header = () => {
     }
   };
 
-
-
   return (
     <>
-      <nav className="  sticky top-0 z-10 ">
-        <div className="absolute w-[100%] ">
-          <div className={`${img.nav} flex  items-center `}>
+      <nav className="sticky top-0 z-10">
+        <div className="absolute w-[100%]">
+          <div className={`${img.nav} flex items-center`}>
             <Sidebar />
             <Link
               to="/"
-              className={`${img.logo}  ml-[3rem] md:ml-[3px] order-2 md:order-1 logo z-10 flex  lg:z-10  `}
+              className={`${img.logo} ml-[3rem] md:ml-[3px] order-2 md:order-1 logo z-10 flex lg:z-10`}
             >
               <span className="md:text-white" style={{ fontWeight: "200" }}>
                 Jaipur
@@ -57,72 +58,111 @@ const Header = () => {
               <h1 className={`${img.logofonts} md:text-white`}>furniture</h1>
             </Link>
 
-            <div className="order-3 search ml-[48px] z-10 relative items-center flex flex-row  ">
-             
-                    <AiOutlineHeart size={24} className="text-white px-2 w-11 h-11 cursor-pointer"
-                    onClick={()=>setOpenWishlist(true)}/>
-                <div className={`${img.bag} cursor-pointer order-4 my-auto  flex`} onClick={()=>setopenCart(true)} >
-                 
-                    {" "}
-                    <ion-icon name="cart-outline"></ion-icon>
-                  {/* <span
-                    className={`${img.zero} bag-item-count absolute top-[-5px] rounded-lg`}
-                  >  
-                  </span> */}
-                </div>
+            <div className="order-3 search ml-[48px] z-10 relative items-center flex flex-row">
+              <AiOutlineHeart 
+                size={24} 
+                className="text-white px-2 w-11 h-11 cursor-pointer"
+                onClick={() => setOpenWishlist(true)}
+              />
+              <div 
+                className={`${img.bag} cursor-pointer order-4 my-auto flex`} 
+                onClick={() => setopenCart(true)}
+              >
+                <ion-icon name="cart-outline"></ion-icon>
+                {totalQuantity > 0 && (
+                  <span className={`${img.zero} bag-item-count absolute top-[-5px] rounded-lg`}>
+                    {totalQuantity}
+                  </span>
+                )}
+              </div>
         
               <div className="order-5">
                 <span
-                  className=" lg:hidden   my-auto "
+                  className="lg:hidden my-auto"
                   onClick={() => setmenuDisplay((preve) => !preve)}
                 >
-                  <div className="w-[4rem] flex items-center justify-center  h-15 ">
+                  <div className="w-[4rem] flex items-center justify-center h-15">
                     {user?.profilePic ? (
-                      <div className="  w-12 h-12 overflow-hidden rounded-full">
+                      <div className="w-12 h-12 overflow-hidden rounded-full">
                         <img
                           src={user?.profilePic}
-                          className=" h-full "
+                          className="h-full"
                           alt={user?.name}
                         />
                       </div>
                     ) : (
-                      <Link to="/login" className=" text-3xl text-white mx-auto">
+                      <Link to="/login" className="text-3xl text-white mx-auto">
                         <CiUser />
                       </Link>
                     )}
-                    {
-                     user?._id &&(
-                      menuDisplay && (
-                        <div className="absolute top-11  p-2 shadow-lg rounded h-fit bg-white bottom-0 ">
-                          <nav>
-                            <Link
-                              to={"admin-panel"}
-                              className="whitespace-nowrap hover:bg-slate-100 p-2 no-underline text-black"
-                            >
-                              Admin
-                            </Link>
-                            <div className="text-black">
-                              {user?._id ? (
-                                <button
-                                  onClick={handleLogout}
-                                  className=" whitespace-nowrap hover:bg-slate-100 p-2  text-black"
-                                >
-                                  {" "}
-                                  - logout
-                                </button>
-                              ) : (
-                                <Link to="/login" className=" text-white mx-auto">
-                                  <CiUser />
-                                </Link>
-                              )}
-                            </div>
-                          </nav>
-                        </div>
-                      )
-                      )
-                    }
-
-                    {}
+                    {user?._id && menuDisplay && (
+                      <div className="absolute top-11 p-2 shadow-lg rounded h-fit bg-white bottom-0">
+                        <nav>
+                          <Link
+                            to="admin-panel"
+                            className="whitespace-nowrap hover:bg-slate-100 p-2 no-underline text-black"
+                          >
+                            Admin Panel
+                          </Link>
+                        </nav>
+                        <nav>
+                          <Link
+                            to="profile"
+                            className="whitespace-nowrap hover:bg-slate-100 p-2 no-underline text-black"
+                          >
+                            Profile
+                          </Link>
+                        </nav>
+                        <nav>
+                          <Link
+                            to="orders"
+                            className="whitespace-nowrap hover:bg-slate-100 p-2 no-underline text-black"
+                          >
+                            Orders
+                          </Link>
+                        </nav>
+                        <nav>
+                          <Link
+                            to="inbox"
+                            className="whitespace-nowrap hover:bg-slate-100 p-2 no-underline text-black"
+                          >
+                            Inbox
+                          </Link>
+                        </nav>
+                        <nav>
+                          <Link
+                            to="address"
+                            className="whitespace-nowrap hover:bg-slate-100 p-2 no-underline text-black"
+                          >
+                            Address
+                          </Link>
+                        </nav>
+                        <nav>
+                          <Link
+                            to="track-order"
+                            className="whitespace-nowrap hover:bg-slate-100 p-2 no-underline text-black"
+                          >
+                            Track Order
+                          </Link>
+                        </nav>
+                        <nav>
+                          <Link
+                            to="change-password"
+                            className="whitespace-nowrap hover:bg-slate-100 p-2 no-underline text-black"
+                          >
+                            Change Password
+                          </Link>
+                        </nav>
+                        <nav>
+                          <div
+                            onClick={handleLogout}
+                            className="whitespace-nowrap hover:bg-slate-100 p-2 cursor-pointer text-black"
+                          >
+                            Logout
+                          </div>
+                        </nav>
+                      </div>
+                    )}
                   </div>
                 </span>
               </div>
@@ -219,22 +259,12 @@ const Header = () => {
                 )}
               </div>
             </div>
-            {/* cart popup */}
-            {
-              openCart ? (
-                <Cart setopenCart={setopenCart}/>
-              ): null
-            }
-            {/* wishlist popup */}
-            {
-              openWishlist ? (
-                <WishList setOpenWishlist={setOpenWishlist}/>
-              ): null
-            }
           </div>
           
         </div>
       </nav>
+      {openCart && <Cart setopenCart={setopenCart} />}
+      {openWishlist && <WishList setOpenWishlist={setOpenWishlist} />}
     </>
   );
 };

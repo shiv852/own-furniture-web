@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import styles from "../styles/styles";
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage, AiOutlineShoppingCart } from "react-icons/ai";
 import ProductDetailsInfo from "./ProductDetailsInfo";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../store/cartSlice";
+import { toast } from "react-toastify";
 
 const ProductDetails = ({data}) => {
  
@@ -10,7 +13,7 @@ const ProductDetails = ({data}) => {
   const [click, setClick] = useState(false);
   const [select, setSelect] = useState(0);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
 
   const incrementCount=()=>{
       setCount(count + 1)
@@ -38,6 +41,23 @@ const ProductDetails = ({data}) => {
     return `/${path}`;
   };
 
+  // Handle Add to Cart
+  const handleAddToCart = () => {
+    const cartItem = {
+      id: data._id || data.id,
+      name: data.name,
+      price: data.price,
+      discount_price: data.discount_price,
+      description: data.description,
+      quantity: count,
+      image_Url: data.image_Url[select].url,
+      shop: data.shop
+    };
+    
+    dispatch(addToCart(cartItem));
+    toast.success("Item added to cart successfully!");
+  };
+
   console.log("current data is here :" ,  data)
 
   return (
@@ -49,17 +69,22 @@ const ProductDetails = ({data}) => {
     <div className="bg-white">
       {data ? (
         <div className={`${styles.section} w-[95%] mx-auto`}>   
-          <div className="w-full py-5 ">
-            <div className="flex flex-col  md:flex-row ">  
-              <div className="w-full 800px:pr-4 mb-8 800px:mb-0 block justify-between ">
+          <div className="w-full py-5">
+            {/* Main content container with clear separation */}
+            <div className="flex flex-col 800px:flex-row w-full">  
+              {/* Left side - Image Gallery Section with Triangular Layout */}
+              <div className="w-full 800px:w-[40%] 800px:pr-4 mb-8 800px:mb-0">
                 <div className="relative h-[400px] w-full">
-                  <div className="absolute top-0 left-1/2 transform  -translate-x-1/2 z-10">
+                  {/* Main large image - top of triangle */}
+                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 z-10">
                     <img 
                       src={getImageUrl(data.image_Url[select].url)} 
                       alt="Main product" 
-                      className="w-[250px] h-[250px] object-contain rounded-lg shadow-md border border-gray-200 bg-white p-2 hover:shadow-lg transition-all duration-300  "
+                      className="w-[250px] h-[250px] object-contain rounded-lg shadow-md border border-gray-200 bg-white p-2 hover:shadow-lg transition-all duration-300"
                     />
                   </div>
+                  
+                  {/* Thumbnail 1 - bottom left of triangle */}
                   <div 
                     className={`absolute bottom-0 left-[15%] transition-all duration-300 ${select === 0 ? 'scale-110 border-2 border-teal-500' : 'opacity-80 hover:opacity-100'}`}
                     onClick={() => setSelect(0)}
@@ -85,10 +110,8 @@ const ProductDetails = ({data}) => {
                 </div>
               </div>
 
-
-
               {/* Right side - Product Details Section */}
-              <div className="w-full  800px:pl-8 800px:border-l            ">
+              <div className="w-full 800px:w-[60%] 800px:pl-8 800px:border-l">
                 <div className="w-full">
                   <h1 className={`${styles.productTitle} text-[24px] font-semibold`}>{data.name}</h1>
                   <p className="mt-3 text-gray-600 text-[15px] leading-6">{data.description}</p>
@@ -99,8 +122,8 @@ const ProductDetails = ({data}) => {
                       {data.price ? data.price + "$" : null}
                     </h3>
                   </div>
-                        
-                  <div className="flex items-center mt-6 justify-between ">
+                  
+                  <div className="flex items-center mt-6 justify-between">
                     <div className="flex items-center">
                       <button 
                         className="bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-l px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out" 
@@ -141,7 +164,10 @@ const ProductDetails = ({data}) => {
                   </div>
 
                   <div className="mt-6 w-full">
-                    <button className={`${styles.button} w-full rounded-md h-12 flex items-center justify-center bg-teal-600 hover:bg-teal-700 transition-all`}>
+                    <button 
+                      className={`${styles.button} w-full rounded-md h-12 flex items-center justify-center bg-teal-600 hover:bg-teal-700 transition-all`}
+                      onClick={handleAddToCart}
+                    >
                       <span className="text-white flex items-center text-[16px]">
                         Add to Cart <AiOutlineShoppingCart className="ml-2" size={20}/>
                       </span>
