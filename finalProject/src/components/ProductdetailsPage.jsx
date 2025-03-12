@@ -12,20 +12,11 @@ const ProductdetailsPage = () => {
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    // Check if the name parameter might be an ID
-    const possibleId = parseInt(name);
-    let foundProduct = null;
+    // Convert the URL parameter to a number for ID comparison
+    const productId = parseInt(name);
     
-    // First try to find the product by ID if the name looks like a number
-    if (!isNaN(possibleId)) {
-      foundProduct = productData.find(product => product.id === possibleId);
-    }
-    
-    // If not found by ID or name isn't a number, try the name-based approach
-    if (!foundProduct) {
-      const productName = name.replace(/-/g, " ");
-      foundProduct = productData.find(product => product.name === productName);
-    }
+    // Find product by ID
+    const foundProduct = productData.find(product => product.id === productId);
     
     setData(foundProduct);
     setLoading(false);
@@ -42,7 +33,7 @@ const ProductdetailsPage = () => {
   if (!data) {
     return (
       <div className="w-full h-[70vh] flex items-center justify-center">
-        <p className="text-2xl font-semibold">Product not found! The product may have been removed or the URL is incorrect.</p>
+        <p className="text-2xl font-semibold">Product not found! Please check the product ID.</p>
       </div>
     );
   }

@@ -9,9 +9,8 @@ const Productcard = ({ data }) => {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
 
-  // Format the product name for the URL
-  const d = data.name;
-  const product_name = d.replace(/\s+/g, "-");
+  // Get the product ID for the URL
+  const productId = data.id;
 
   // Function to get the correct image URL
   const getImageUrl = (path) => {
@@ -27,7 +26,7 @@ const Productcard = ({ data }) => {
     <>
       <div className="w-full h-[370px] bg-white rounded-lg shadow-sm p-3 relative cursor-pointer">
         <div className="flex justify-end"></div>
-        <Link to={`/product/${product_name}`} data-product-id={data.id}>
+        <Link to={`/product/${productId}`}>
           <img
             src={getImageUrl(data.image_Url[0].url)}
             alt="Product image"
@@ -37,48 +36,25 @@ const Productcard = ({ data }) => {
         <Link to="/" className="no-underline">
           <h5 className={`${styles.shop_name}`}>{data.shop.name}</h5>
         </Link>
-        <Link to={`/product/${product_name}`} className="no-underline" data-product-id={data.id}>
+        <Link to={`/product/${productId}`} className="no-underline">
           <p className="text-black pb-1  font-[300] ">
             {data.name.length > 40 ? data.name.slice(0, 30) + "..." : data.name}
           </p>
-
-          <div className="flex pb-2">
-            <AiFillStar
-              className="mr-2 cursor-pointer"
-              color="#F6BA00 "
-              size={20}
-            />
-            <AiFillStar
-              className="mr-2 cursor-pointer"
-              color="#F6BA00"
-              size={20}
-            />
-            <AiFillStar
-              className="mr-2 cursor-pointer"
-              color="#F6BA00"
-              size={20}
-            />
-            <AiOutlineStar
-              className="mr-2 cursor-pointer"
-              color="#F6BA00"
-              size={20}
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex">
-              <h5 className={`${styles.productDiscountPrice}`}>
-                ${data.price === 0 ? data.price : data.discount_price}
-              </h5>
-              <h4 className={`${styles.price}`}>
-                {data.price ? data.price + "$" : null}
-              </h4>
-            </div>
-            <span className="font-[400px] text-[12px] text-[#68d284]">
-              {data.total_sell} sold
-            </span>
-          </div>
         </Link>
+        <div className="flex">
+          <AiFillStar className="mr-2 cursor-pointer" color="#F6BA00" size={20} />
+          <AiFillStar className="mr-2 cursor-pointer" color="#F6BA00" size={20} />
+          <AiFillStar className="mr-2 cursor-pointer" color="#F6BA00" size={20} />
+          <AiFillStar className="mr-2 cursor-pointer" color="#F6BA00" size={20} />
+          <AiOutlineStar className="mr-2 cursor-pointer" color="#F6BA00" size={20} />
+        </div>
+        <div className="py-2 flex items-center justify-between">
+          <div className="flex">
+            <h5 className={`${styles.productDiscountPrice}`}>${data.discount_price}</h5>
+            <h4 className={`${styles.price}`}>{data.price ? "$" + data.price : null}</h4>
+          </div>
+          <span className="font-[400] text-[17px] text-[#68d284]">{data.total_sell} sold</span>
+        </div>
         {/* side options */}
         <div>
           {click ? (
@@ -112,7 +88,6 @@ const Productcard = ({ data }) => {
             color="#444"
             title="Add to cart"
           />
-          {/* click to open details popup */}
           {open ? <ProductDetailsCard setOpen={setOpen} data={data} /> : null}
         </div>
       </div>
