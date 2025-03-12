@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../styles/styles";
-import { AiOutlineShoppingCart, AiOutlineEye, AiFillStar  , AiOutlineStar, AiFillHeart , AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineShoppingCart, AiOutlineEye, AiFillStar, AiOutlineStar, AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import ProductDetailsCard from "../ProductDetailsCard/ProductDetailsCard";
 
 const Productcard = ({ data }) => {
+  console.log("Productcard - Product data:", data);
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
 
+  // Format the product name for the URL
   const d = data.name;
   const product_name = d.replace(/\s+/g, "-");
 
@@ -25,7 +27,7 @@ const Productcard = ({ data }) => {
     <>
       <div className="w-full h-[370px] bg-white rounded-lg shadow-sm p-3 relative cursor-pointer">
         <div className="flex justify-end"></div>
-        <Link to={`/product/${product_name}`}>
+        <Link to={`/product/${product_name}`} data-product-id={data.id}>
           <img
             src={getImageUrl(data.image_Url[0].url)}
             alt="Product image"
@@ -35,7 +37,7 @@ const Productcard = ({ data }) => {
         <Link to="/" className="no-underline">
           <h5 className={`${styles.shop_name}`}>{data.shop.name}</h5>
         </Link>
-        <Link to={`/product/${product_name}`} className="no-underline ">
+        <Link to={`/product/${product_name}`} className="no-underline" data-product-id={data.id}>
           <p className="text-black pb-1  font-[300] ">
             {data.name.length > 40 ? data.name.slice(0, 30) + "..." : data.name}
           </p>
@@ -63,7 +65,7 @@ const Productcard = ({ data }) => {
             />
           </div>
 
-          <div className="   flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <div className="flex">
               <h5 className={`${styles.productDiscountPrice}`}>
                 ${data.price === 0 ? data.price : data.discount_price}
@@ -77,44 +79,42 @@ const Productcard = ({ data }) => {
             </span>
           </div>
         </Link>
-          {/* side options */}
-          <div>
-            {click ?(
-                <AiFillHeart
-                size={22}
-                className="cursor-pointer absolute right-2 top-5"
-                onClick={()=>setClick(!click)}
-                color={click ? "red" :"#333"}
-                title="remove from wishlist"
-                />
-            ):(
-                <AiOutlineHeart 
-                size={22}
-                className="cursor-pointer absolute right-2 top-5"
-                onClick={()=>setClick(!click)}
-                color={click ? "red" : "#333"}
-                title="Add to wishlist"   
-                />
-            )}
-            <AiOutlineEye
-             size={22}
-             className="cursor-pointer absolute right-2 top-14" 
-             onClick={()=>setOpen(!open)} 
-             color="#333"  
-             title="Quick view" 
+        {/* side options */}
+        <div>
+          {click ? (
+            <AiFillHeart
+              size={22}
+              className="cursor-pointer absolute right-2 top-5"
+              onClick={() => setClick(!click)}
+              color={click ? "red" : "#333"}
+              title="Remove from wishlist"
             />
-            <AiOutlineShoppingCart
-             size={25}
-             className="cursor-pointer absolute right-2 top-24" 
-             onClick={()=>setOpen(!open)} 
-             color="#444"  
-             title="Add to cart " 
+          ) : (
+            <AiOutlineHeart
+              size={22}
+              className="cursor-pointer absolute right-2 top-5"
+              onClick={() => setClick(!click)}
+              color={click ? "red" : "#333"}
+              title="Add to wishlist"
             />
-            {/* click to open details popup */}
-            {
-              open? <ProductDetailsCard  setOpen={setOpen} data={data}/>:null
-            }
-          </div>
+          )}
+          <AiOutlineEye
+            size={22}
+            className="cursor-pointer absolute right-2 top-14"
+            onClick={() => setOpen(!open)}
+            color="#333"
+            title="Quick view"
+          />
+          <AiOutlineShoppingCart
+            size={25}
+            className="cursor-pointer absolute right-2 top-24"
+            onClick={() => setOpen(!open)}
+            color="#444"
+            title="Add to cart"
+          />
+          {/* click to open details popup */}
+          {open ? <ProductDetailsCard setOpen={setOpen} data={data} /> : null}
+        </div>
       </div>
     </>
   );
