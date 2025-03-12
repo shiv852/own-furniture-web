@@ -1,16 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../styles/styles";
 import { AiOutlineShoppingCart, AiOutlineEye, AiFillStar, AiOutlineStar, AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import ProductDetailsCard from "../ProductDetailsCard/ProductDetailsCard";
+import { Context } from "../../store/Item_store";
+import { toast } from "react-toastify";
 
 const Productcard = ({ data }) => {
   console.log("Productcard - Product data:", data);
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
+  const { addToWishlist, removeFromWishlist, isInWishlist, addToCart } = useContext(Context);
 
   // Get the product ID for the URL
   const productId = data.id;
+
+  // Check if product is in wishlist on component mount
+  useEffect(() => {
+    if (data && data.id) {
+      setClick(isInWishlist(data.id));
+    }
+  }, [data, isInWishlist]);
 
   // Function to get the correct image URL
   const getImageUrl = (path) => {
@@ -20,6 +30,28 @@ const Productcard = ({ data }) => {
     }
     // Otherwise, prepend the public path
     return path ? `/${path}` : '';
+  };
+
+  // Handle wishlist toggle
+  const handleWishlistToggle = () => {
+    if (data) {
+      if (click) {
+        removeFromWishlist(data.id);
+        toast.success("Item removed from wishlist!");
+      } else {
+        addToWishlist(data);
+        toast.success("Item added to wishlist!");
+      }
+      setClick(!click);
+    }
+  };
+
+  // Handle add to cart
+  const handleAddToCart = () => {
+    if (data) {
+      addToCart({ ...data, qty: 1 });
+      toast.success("Item added to cart successfully!");
+    }
   };
 
   return (
@@ -61,7 +93,7 @@ const Productcard = ({ data }) => {
             <AiFillHeart
               size={22}
               className="cursor-pointer absolute right-2 top-5"
-              onClick={() => setClick(!click)}
+              onClick={handleWishlistToggle}
               color={click ? "red" : "#333"}
               title="Remove from wishlist"
             />
@@ -69,7 +101,7 @@ const Productcard = ({ data }) => {
             <AiOutlineHeart
               size={22}
               className="cursor-pointer absolute right-2 top-5"
-              onClick={() => setClick(!click)}
+              onClick={handleWishlistToggle}
               color={click ? "red" : "#333"}
               title="Add to wishlist"
             />
@@ -84,7 +116,7 @@ const Productcard = ({ data }) => {
           <AiOutlineShoppingCart
             size={25}
             className="cursor-pointer absolute right-2 top-24"
-            onClick={() => setOpen(!open)}
+            onClick={handleAddToCart}
             color="#444"
             title="Add to cart"
           />
