@@ -119,7 +119,7 @@ const ProductDetails = ({data}) => {
             <div className="w-full py-5">
               <div className=" w-full flex "> 
                     
-                    <div className="w-full 800px:w-[50%] flex-col  items-center block justify-between">
+                    <div className="w-full 800px:w-[50%] flex-row  items-center  md:block justify-between">
                       <div className="w-full flex justify-center mb-4 ">
                         <img 
                           src={getProductImageUrl(select)}

@@ -30,30 +30,47 @@ const WishlistSingle = ({data}) => {
   };
 
   return (
-    <div className="border-b p-4">
-      <div className="w-full flex items-center">
-        <RxCross1 
-          className='cursor-pointer mx-auto' 
-          onClick={handleRemoveFromWishlist}
-        />
-        <div className="flex item-center">
+    <div className="border-b p-4 hover:bg-gray-50 transition-colors">
+      <div className="w-full flex flex-wrap items-center">
+        {/* Header with actions */}
+        <div className="flex items-center w-full mb-2">
+          <h5 className="text-sm font-medium line-clamp-1 flex-1">{data.name}</h5>
+          
+          <div className="flex items-center gap-3">
+            <BsCartPlus 
+              size={20} 
+              className='cursor-pointer text-gray-600 hover:text-blue-500 transition-colors' 
+              title='Add to cart'
+              onClick={handleAddToCart}
+            />
+            <RxCross1 
+              className='cursor-pointer text-gray-600 hover:text-red-500 transition-colors' 
+              onClick={handleRemoveFromWishlist}
+              size={18}
+              title="Remove from wishlist"
+            />
+          </div>
+        </div>
+        
+        {/* Product details */}
+        <div className="flex w-full">
           <img 
             src={data.image_Url && data.image_Url[0] ? getImageUrl(data.image_Url[0].url) : "images/img5.jpg"} 
             alt={data.name || "Product image"} 
-            className='w-[80px] h-[80px] ml-2 rounded-sm'
+            className='w-[70px] h-[70px] rounded-md object-contain'
           />
-        </div>
-        <div className='pl-2'>
-          <h5>{data.name}</h5>
-          <h4 className='font-[400] text-[15px] text-[#00000082]'>${data.discount_price || data.price}</h4>
-        </div>
-        <div className='mx-auto'>
-          <BsCartPlus 
-            size={20} 
-            className='cursor-pointer' 
-            title='Add to cart'
-            onClick={handleAddToCart}
-          />
+          
+          <div className='pl-3 flex-1'>
+            <div className="flex items-center gap-2">
+              <h4 className='font-semibold text-[15px]'>${data.discount_price || data.price}</h4>
+              {data.price && data.discount_price && (
+                <h4 className='text-[13px] text-gray-500 line-through'>${data.price}</h4>
+              )}
+            </div>
+            <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+              {data.description ? data.description.substring(0, 60) + (data.description.length > 60 ? '...' : '') : ''}
+            </p>
+          </div>
         </div>
       </div> 
     </div>
