@@ -65,27 +65,29 @@ const Productcard = ({ data }) => {
             className="w-full overflow-hidden h-[170px] object-contain"
           />
         </Link>
-        <Link to="/" className="no-underline">
-          <h5 className={`${styles.shop_name}`}>{data.shop.name}</h5>
-        </Link>
-        <Link to={`/product/${productId}`} className="no-underline">
-          <p className="text-black pb-1  font-[300] ">
-            {data.name.length > 40 ? data.name.slice(0, 30) + "..." : data.name}
-          </p>
-        </Link>
-        <div className="flex">
-          <AiFillStar className="mr-2 cursor-pointer" color="#F6BA00" size={20} />
-          <AiFillStar className="mr-2 cursor-pointer" color="#F6BA00" size={20} />
-          <AiFillStar className="mr-2 cursor-pointer" color="#F6BA00" size={20} />
-          <AiFillStar className="mr-2 cursor-pointer" color="#F6BA00" size={20} />
-          <AiOutlineStar className="mr-2 cursor-pointer" color="#F6BA00" size={20} />
-        </div>
-        <div className="py-2 flex items-center justify-between">
-          <div className="flex">
-            <h5 className={`${styles.productDiscountPrice}`}>${data.discount_price}</h5>
-            <h4 className={`${styles.price}`}>{data.price ? "$" + data.price : null}</h4>
+        <div className="flex flex-col flex-grow overflow-hidden">
+          <Link to="/" className="no-underline block">
+            <h5 className={`${styles.shop_name} truncate`}>{data.shop.name}</h5>
+          </Link>
+          <Link to={`/product/${productId}`} className="no-underline block">
+            <p className="text-black font-[300] line-clamp-2 text-sm">
+              {data.name}
+            </p>
+          </Link>
+          <div className="flex mt-1">
+            <AiFillStar className="mr-2 cursor-pointer" color="#F6BA00" size={20} />
+            <AiFillStar className="mr-2 cursor-pointer" color="#F6BA00" size={20} />
+            <AiFillStar className="mr-2 cursor-pointer" color="#F6BA00" size={20} />
+            <AiFillStar className="mr-2 cursor-pointer" color="#F6BA00" size={20} />
+            <AiOutlineStar className="mr-2 cursor-pointer" color="#F6BA00" size={20} />
           </div>
-          <span className="font-[400] text-[17px] text-[#68d284]">{data.total_sell} sold</span>
+          <div className="py-2 flex items-center justify-between mt-auto">
+            <div className="flex items-center">
+              <h5 className={`${styles.productDiscountPrice} mr-2`}>${data.discount_price}</h5>
+              <h4 className={`${styles.price} text-sm`}>{data.price ? "$" + data.price : null}</h4>
+            </div>
+            <span className="font-[400] text-sm text-[#68d284] truncate">{data.total_sell} sold</span>
+          </div>
         </div>
         {/* side options */}
         <div>
