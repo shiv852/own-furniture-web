@@ -114,17 +114,17 @@ const ProductDetailsCard = ({setOpen , data}) => {
                             <AiFillHeart
                             size={30}
                             className="cursor-pointer"
-                            onClick={()=>setClick(!click)}
+                            onClick={handleFavoriteClick}
                             color={click ? "red" :"#333"}
-                            title="remove from wishlist"
+                            title="Remove from favorites"
                             />
                            ):(
                             <AiOutlineHeart 
                             size={30}
                             className="cursor-pointer "
-                            onClick={()=>setClick(!click)}
+                            onClick={handleFavoriteClick}
                             color={click ? "red" : "#333"}
-                            title="Add to wishlist"   
+                            title="Add to favorites"   
                             />
                            )}
                         </div>

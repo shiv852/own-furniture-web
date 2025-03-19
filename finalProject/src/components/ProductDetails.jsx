@@ -117,15 +117,16 @@ const ProductDetails = ({data}) => {
         {data ? (
           <div className={`${styles.section} w-[90%] 800px:w-[80%] mx-auto`}>   
             <div className="w-full py-5">
-              <div className=" w-full flex "> 
+              <div className=" w-full flex-row md:flex-col bg-blue-500"> 
                     
-                    <div className="w-full 800px:w-[50%] flex-row  items-center  md:block justify-between">
-                      <div className="w-full flex justify-center mb-4 ">
+                    <div className="w-full  items-center flex md:flex-col md:block  justify-between">
+                      <div className="w-full flex  justify-center   mb-4 bg-green-400 ">
                         <img 
                           src={getProductImageUrl(select)}
                           alt={data.name || "Product image"} 
                           className="w-[90%] max-w-[400px] h-auto object-contain rounded-lg shadow-md"
                         />
+                        
                       </div>
                       
                       {/* Thumbnails row */}
@@ -151,7 +152,7 @@ const ProductDetails = ({data}) => {
 
 
                 {/* Product details section */}
-                    <div className="w-full 800px:w-[50%] mt-8 800px:mt-0 800px:pl-8 block justify-between">
+                    <div className="w-full 800px:w-[50%] mt-8 800px:mt-0 800px:pl-8 md:block justify-between bg-pink-400">
                       <h1 className={`${styles.productTitle}`}>{data.name}</h1>
                       <p className="text-gray-600 mt-2">{data.description}</p>
                       <div className="flex mt-4 items-center">

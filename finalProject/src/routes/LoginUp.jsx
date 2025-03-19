@@ -72,7 +72,6 @@ const LoginUp = () => {
       toast.error(dataApi.message)
     }
   };
-
   return (
     <>
       <section id="login">
