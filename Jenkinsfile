@@ -32,7 +32,7 @@ pipeline {
         stage('Git: Code Checkout') {
             steps {
                 script{
-                    code_checkout("https://github.com/shiv852/Wanderlust-Mega-Project.git","main")
+                    code_checkout("https://github.com/shiv852/own-furniture-web.git","master")
                     
                 }
             }
@@ -57,7 +57,7 @@ pipeline {
         stage("SonarQube: Code Analysis"){
             steps{
                 script{
-                    sonarqube_analysis("Sonar","wanderlust","wanderlust")
+                    sonarqube_analysis("Sonar","furniture","furniture")
                 }
             }
         }
@@ -98,21 +98,22 @@ pipeline {
             steps{
                 script{
                         dir('backend'){
-                            docker_build("wanderlust-backend-beta","${params.BACKEND_DOCKER_TAG}","shivsaini23")
+                            docker_build("furniture-backend","${params.BACKEND_DOCKER_TAG}","shivsaini23")
                         }
                     
                         dir('frontend'){
-                            docker_build("wanderlust-frontend-beta","${params.FRONTEND_DOCKER_TAG}","shivsaini23")
+                            docker_build("furniture-frontend","${params.FRONTEND_DOCKER_TAG}","shivsaini23")
                         }
                 }
             }
         }
-        
+        /* jab ham hamari jenkins file ko run krenge tab ek parameter box open hoga jenkins mein hi us box mein ham docker image pass krenge jo ki dockerhub mein 
+        ja kr ban jayegi, fir ham usko use krlenge */
         stage("Docker: Push to DockerHub"){
             steps{
                 script{
-                    docker_push("wanderlust-backend-beta","${params.BACKEND_DOCKER_TAG}","shivsaini23") 
-                    docker_push("wanderlust-frontend-beta","${params.FRONTEND_DOCKER_TAG}","shivsaini23")
+                    docker_push("furniture-backend","${params.BACKEND_DOCKER_TAG}","shivsaini23") 
+                    docker_push("furniture-frontend","${params.FRONTEND_DOCKER_TAG}","shivsaini23")
                 }
             }
         }
