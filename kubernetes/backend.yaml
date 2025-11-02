@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: shivsaini23/wanderlust-backend-beta:v2
+          image: shivsaini23/furniture-backend:v2
           ports:
             - containerPort: 3000
 ---
