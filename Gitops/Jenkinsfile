@@ -1,3 +1,4 @@
+// this is my CD pipeline it can be deploye throw the gitops 
 @Library('Shared') _
 pipeline {
     agent any
