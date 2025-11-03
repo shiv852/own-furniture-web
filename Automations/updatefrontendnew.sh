@@ -7,7 +7,7 @@ INSTANCE_ID="i-0fd1a236625638ffb"
 ipv4_address=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
 
 # Path to the .env file
-file_to_find="../frontend/.env.docker"
+file_to_find="../finalProject/.env.docker"
 
 # Check the current VITE_API_PATH in the .env file
 current_url=$(cat $file_to_find)
