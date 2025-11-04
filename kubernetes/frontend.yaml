@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: shivsaini23/furniture-frontend:v2
+          image: shivsaini23/furniture-frontend:v1
           ports:
             - containerPort: 5173
 ---
