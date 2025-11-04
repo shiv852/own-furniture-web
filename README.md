@@ -4,4 +4,4 @@ In which .env file mongodb url are update bcz if application on running on local
 on eks cluster then url is MONGODB_URL = mongodb: //mongo-service: 27017/furniture and ,  the /furniture the name of the database.
 
 
-backend/config mein update same database name to the /.env mongodb_url file 
+backend/config mein update same database name to the backend/.env mongodb_url file 
