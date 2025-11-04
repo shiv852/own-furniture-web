@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: shivsaini23/furniture-backend:v3
+          image: shivsaini23/furniture-backend:v4
           ports:
             - containerPort: 3000
 ---
