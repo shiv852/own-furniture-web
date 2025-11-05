@@ -19,8 +19,16 @@ spec:
       containers:
         - name: backend
           image: shivsaini23/furniture-backend:v2
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
+              protocol: TCP
+          env:
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: JWT_SECRET
 ---
 apiVersion: v1
 kind: Service
