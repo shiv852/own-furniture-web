@@ -1,4 +1,3 @@
-// this is my CD pipeline it can be deploye throw the gitops 
 @Library('Shared') _
 pipeline {
     agent any
@@ -70,7 +69,7 @@ pipeline {
                         git commit -m "Update from Jenkins" || echo "No changes to commit"
                         
                         echo "Pushing changes to github: "
-                        git push origin main
+                        git push origin master
                     '''
                     }
                 }
