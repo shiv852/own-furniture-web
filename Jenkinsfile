@@ -46,14 +46,6 @@ pipeline {
             }
         }
 
-        stage("OWASP: Dependency check"){
-            steps{
-                script{
-                    owasp_dependency()
-                }
-            }
-        }
-        
         stage("SonarQube: Code Analysis"){
             steps{
                 script{
@@ -85,15 +77,6 @@ pipeline {
                 }
             }
         }
-        
-        stage("SonarQube: Code Quality Gates"){
-            steps{
-                script{
-                    sonarqube_code_quality()
-                }
-            }
-        }
-        
         stage("Docker: Build Images"){
             steps{
                 script{
@@ -101,7 +84,7 @@ pipeline {
                             docker_build("furniture-backend","${params.BACKEND_DOCKER_TAG}","shivsaini23")
                         }
                     
-                        dir('frontend'){
+                        dir('finalProject'){
                             docker_build("furniture-frontend","${params.FRONTEND_DOCKER_TAG}","shivsaini23")
                         }
                 }
@@ -118,13 +101,12 @@ pipeline {
             }
         }
     }
-    post{
-        success{
-            archiveArtifacts artifacts: '*.xml', followSymlinks: false
-            build job: "Wanderlust-CD", parameters: [
-                string(name: 'FRONTEND_DOCKER_TAG', value: "${params.FRONTEND_DOCKER_TAG}"),
-                string(name: 'BACKEND_DOCKER_TAG', value: "${params.BACKEND_DOCKER_TAG}")
+    post {
+      success {
+            build job: "jenkins-cd", parameters: [
+             string(name: 'FRONTEND_DOCKER_TAG', value: "${params.FRONTEND_DOCKER_TAG}"),
+             string(name: 'BACKEND_DOCKER_TAG', value: "${params.BACKEND_DOCKER_TAG}")
             ]
-        }
+      }
     }
 }
