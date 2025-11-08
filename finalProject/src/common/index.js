@@ -1,5 +1,5 @@
-// const backendDomin = "http://localhost:3000";
-   const backendDomin = "http://13.203.220.54:31100"
+const backendDomin = "http://localhost:3000";
+   // const backendDomin = "http://13.203.220.54:31100"
 
 const SummaryApi = {
   signUP: {
