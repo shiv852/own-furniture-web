@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-migration
+  namespace: furniture
+spec:
+  template:
+    spec:
+      containers:
+      - name: migration
+        image: shivsaini23/e-commerce-migration:latest
+        imagePullPolicy: Always
+        env:
+        - name: MONGODB_URI
+          value: "mongodb://mongodb-service:27017/furniture"
+      restartPolicy: OnFailure
