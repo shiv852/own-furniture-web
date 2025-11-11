@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: furniture-frontend
+  namespace: furniture
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: furniture-frontend
+  template:
+    metadata:
+      labels:
+        app: furniture-frontend
+    spec:
+      containers:
+        - name: furniture-frontend
+          image: YOUR_FRONTEND_IMAGE_HERE
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5173
+          envFrom:
+            - configMapRef:
+                name: furniture-config
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "300m"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5173
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5173
+            initialDelaySeconds: 20
+            periodSeconds: 15
