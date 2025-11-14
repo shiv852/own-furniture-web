@@ -7,7 +7,7 @@ metadata:
 data:
   MONGODB_URI: "mongodb://mongo-service:27017/furniture"
   NODE_ENV: "production"
-  NEXT_PUBLIC_API_URL: "https://13.232.97.144/api"
-  NEXTAUTH_URL: "https://13.232.97.144/"
+  NEXT_PUBLIC_API_URL: "https://65.0.107.207/api"
+  NEXTAUTH_URL: "https://65.0.107.207/"
   NEXTAUTH_SECRET: "0xc9u7nNqm1XTQ7RfH83vWOnMJT+h92jjpfoGNJQztQ="
   JWT_SECRET: "719a61f58d82de030088d02545f6b31a3ebacba600fe96deecbd562ff27e191f"
