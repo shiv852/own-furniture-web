@@ -1,3 +1,74 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: furniture-backend
+#   namespace: furniture
+# spec:
+#   replicas: 2
+#   selector:
+#     matchLabels:
+#       app: furniture-backend
+#   template:
+#     metadata:
+#       labels:
+#         app: furniture-backend
+#     spec:
+#       containers:
+#         - name: furniture-backend
+#           image: shivsaini23/e-commerce:latest
+#           imagePullPolicy: Always
+#           ports:
+#             - containerPort: 3000
+#           envFrom:
+#             - configMapRef:
+#                 name: furniture-config
+#             - secretRef:
+#                 name: furniture-secrets
+#           env:
+#             - name: NEXTAUTH_URL
+#               valueFrom:
+#                 configMapKeyRef:
+#                   name: furniture-config
+#                   key: NEXTAUTH_URL
+#             - name: NEXTAUTH_SECRET
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: furniture-secrets
+#                   key: NEXTAUTH_SECRET
+#             - name: JWT_SECRET
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: furniture-secrets
+#                   key: JWT_SECRET
+#           resources:
+#             requests:
+#               memory: "256Mi"
+#               cpu: "200m"
+#             limits:
+#               memory: "512Mi"
+#               cpu: "500m"
+#           startupProbe:
+#             httpGet:
+#               path: /
+#               port: 3000
+#             failureThreshold: 30
+#             periodSeconds: 10
+#           readinessProbe:
+#             httpGet:
+#               path: /
+#               port: 3000
+#             initialDelaySeconds: 20
+#             periodSeconds: 15
+#           livenessProbe:
+#             httpGet:
+#               path: /
+#               port: 3000
+#             initialDelaySeconds: 25
+#             periodSeconds: 20
+
+
+
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,27 +90,26 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
+
+          env:
+            - name: PORT
+              value: "3000"
+
+            - name: MONGODB_URL
+              value: "mongodb://mongodb-service:27017/furniture"
+
+            - name: REDIS_URL
+              value: "redis://redis-service:6379"
+
+            - name: FRONTEND_URL
+              value: "http://frontend-service.furniture.svc.cluster.local:5173"
+
           envFrom:
             - configMapRef:
                 name: furniture-config
             - secretRef:
                 name: furniture-secrets
-          env:
-            - name: NEXTAUTH_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: furniture-config
-                  key: NEXTAUTH_URL
-            - name: NEXTAUTH_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: furniture-secrets
-                  key: NEXTAUTH_SECRET
-            - name: JWT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: furniture-secrets
-                  key: JWT_SECRET
+
           resources:
             requests:
               memory: "256Mi"
@@ -47,21 +117,18 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "500m"
-          startupProbe:
-            httpGet:
-              path: /
-              port: 3000
-            failureThreshold: 30
-            periodSeconds: 10
+
           readinessProbe:
             httpGet:
               path: /
               port: 3000
             initialDelaySeconds: 20
-            periodSeconds: 15
+            periodSeconds: 10
+
           livenessProbe:
             httpGet:
               path: /
               port: 3000
             initialDelaySeconds: 25
-            periodSeconds: 20
+            periodSeconds: 15
+
