@@ -15,10 +15,13 @@ spec:
     spec:
       containers:
         - name: furniture-frontend
-          image: YOUR_FRONTEND_IMAGE_HERE
+          image: shivsaini23/ecommerce-frontend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5173
+          env:
+            - name: VITE_API_PATH
+              value: "http://backend-service:3000"
           envFrom:
             - configMapRef:
                 name: furniture-config
@@ -33,11 +36,11 @@ spec:
             httpGet:
               path: /
               port: 5173
-            initialDelaySeconds: 15
+            initialDelaySeconds: 10
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /
               port: 5173
-            initialDelaySeconds: 20
+            initialDelaySeconds: 15
             periodSeconds: 15
