@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: furniture
+  name: furniture-backend
   namespace: furniture
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: furniture
+      app: furniture-backend
   template:
     metadata:
       labels:
-        app: furniture
+        app: furniture-backend
     spec:
       containers:
-        - name: furniture
+        - name: furniture-backend
           image: shivsaini23/e-commerce:latest
           imagePullPolicy: Always
           ports:
