@@ -1,3 +1,51 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: furniture-frontend
+#   namespace: furniture
+# spec:
+#   replicas: 2
+#   selector:
+#     matchLabels:
+#       app: furniture-frontend
+#   template:
+#     metadata:
+#       labels:
+#         app: furniture-frontend
+#     spec:
+#       containers:
+#         - name: furniture-frontend
+#           image: shivsaini23/ecommerce-frontend:latest
+#           imagePullPolicy: Always
+#           ports:
+#             - containerPort: 5173
+#           env:
+#             - name: VITE_API_PATH
+#               value: "http://backend-service:3000"
+#           envFrom:
+#             - configMapRef:
+#                 name: furniture-config
+#           resources:
+#             requests:
+#               memory: "128Mi"
+#               cpu: "100m"
+#             limits:
+#               memory: "256Mi"
+#               cpu: "300m"
+#           readinessProbe:
+#             httpGet:
+#               path: /
+#               port: 5173
+#             initialDelaySeconds: 10
+#             periodSeconds: 10
+#           livenessProbe:
+#             httpGet:
+#               path: /
+#               port: 5173
+#             initialDelaySeconds: 15
+#             periodSeconds: 15
+
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,16 +63,19 @@ spec:
     spec:
       containers:
         - name: furniture-frontend
-          image: shivsaini23/ecommerce-frontend:latest
+          image: shivsaini23/furniture-frontend:v1   # <<== Replace this with your image
           imagePullPolicy: Always
           ports:
             - containerPort: 5173
-          env:
-            - name: VITE_API_PATH
-              value: "http://backend-service:3000"
           envFrom:
             - configMapRef:
                 name: furniture-config
+          env:
+            - name: VITE_API_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: furniture-config
+                  key: VITE_API_PATH
           resources:
             requests:
               memory: "128Mi"
@@ -32,15 +83,18 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "300m"
+
           readinessProbe:
             httpGet:
               path: /
               port: 5173
-            initialDelaySeconds: 10
+            initialDelaySeconds: 15
             periodSeconds: 10
+
           livenessProbe:
             httpGet:
               path: /
               port: 5173
-            initialDelaySeconds: 15
+            initialDelaySeconds: 20
             periodSeconds: 15
+
