@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: funiture-config
+  name: furniture-config
   namespace: furniture
 data:
   MONGODB_URI: "mongodb://mongodb-service:27017/furniture"
